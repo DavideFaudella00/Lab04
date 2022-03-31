@@ -8,7 +8,6 @@ public class ConnectDB {
 	
 	// check user e password
 	static private final String jdbcUrl = "jdbc:mysql://localhost/iscritticorsi?user=root&password=root";
-
 	public static Connection getConnection() {
 
 		try {
