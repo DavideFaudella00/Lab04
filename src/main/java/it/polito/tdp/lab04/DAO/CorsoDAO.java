@@ -121,6 +121,40 @@ public class CorsoDAO {
 		}
 	}
 
+	public boolean isIscritto(String nomeCorso, int matricola) {
+		final String sql = "SELECT s.nome " + "FROM iscrizione i, studente s, corso c "
+				+ "WHERE i.codins = c.codins AND s.matricola = i.matricola AND c.nome = ? AND s.matricola = ?";
+
+		boolean flag = false;
+
+		try {
+			Connection conn = ConnectDB.getConnection();
+			PreparedStatement st = conn.prepareStatement(sql);
+
+			st.setString(1, nomeCorso);
+			st.setInt(2, matricola);
+
+			ResultSet rs = st.executeQuery();
+
+			while (rs.next()) {
+
+				String nome = rs.getString("nome");
+
+				if (nome != null) {
+					flag = true;
+				}
+			}
+
+			conn.close();
+
+			return flag;
+
+		} catch (SQLException e) {
+			// e.printStackTrace();
+			throw new RuntimeException("Errore Db", e);
+		}
+	}
+
 	/*
 	 * Data una matricola ed il codice insegnamento, iscrivi lo studente al corso.
 	 */

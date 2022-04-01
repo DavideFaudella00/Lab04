@@ -23,7 +23,6 @@ public class FXMLController {
 	@FXML
 	private URL location;
 
-
 	@FXML
 	private ComboBox<String> cmbox;
 
@@ -41,23 +40,51 @@ public class FXMLController {
 
 	@FXML
 	void doCercaCorsi(ActionEvent event) {
-
+		txtArea.clear();
+		if (txtMatricola.getText().equals("")) {
+			txtArea.setText("Inserisci un matricola");
+			return;
+		}
+		int s = Integer.parseInt(txtMatricola.getText());
+		List<String> r = model.getCorsiDiQuelloStudente(s);
+		if(r.size() == 0) {
+			txtArea.setText("Matricola non esistente");
+			return;
+		}
+		for (String k : r) {
+			txtArea.appendText(k + "\n");
+		}
 	}
 
 	@FXML
 	void doCercaIscritti(ActionEvent event) {
 		txtArea.clear();
 		String s = cmbox.getValue();
-		txtArea.appendText(s);
-		List<Studente> r = model.studentiDiQuelCorso(s);
-		for(Studente stud :r) {
-			txtArea.appendText(stud.toString()+"\n");
+		// Fai if
+		if (s != null) {
+			txtArea.appendText(s);
+			List<Studente> r = model.studentiDiQuelCorso(s);
+			for (Studente stud : r) {
+				txtArea.appendText(stud.toString() + "\n");
+			}
+		} else {
+			txtArea.appendText("Seleziona un corso");
 		}
 	}
 
 	@FXML
 	void doIscrivi(ActionEvent event) {
-
+		txtArea.clear();
+		if (txtMatricola.getText().equals("")) {
+			txtArea.setText("Inserisci un matricola");
+			return;
+		}
+		if(model.isIscritto(cmbox.getValue(), Integer.parseInt(txtMatricola.getText())) == true) {
+			txtArea.appendText("Studente gia iscritto");
+		}
+		else {
+			txtArea.appendText("Ancora non iscritto");
+		}
 	}
 
 	@FXML
@@ -66,10 +93,20 @@ public class FXMLController {
 		txtNome.clear();
 		txtCognome.clear();
 		txtMatricola.clear();
+		cmbox.setValue(null);
 	}
 
 	@FXML
 	void doCompleta(ActionEvent event) {
+		txtArea.clear();
+		if (txtMatricola.getText().equals("")) {
+			txtArea.setText("Inserisci un matricola");
+			return;
+		}
+		if (model.completa(Integer.parseInt(txtMatricola.getText())) == null) {
+			txtArea.setText("Matricola non esistente");
+			return;
+		}
 		txtCognome.setText(model.completa(Integer.parseInt(txtMatricola.getText())).getCognome());
 		txtNome.setText(model.completa(Integer.parseInt(txtMatricola.getText())).getNome());
 	}

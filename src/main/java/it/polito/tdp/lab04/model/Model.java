@@ -41,4 +41,14 @@ public class Model {
 		l = c.getStudentiIscrittiAlCorso(c.getCorso(corso));
 		return l;
 	}
+
+	public List<String> getCorsiDiQuelloStudente(int matricola) {
+		List<String> l = new ArrayList<>();
+		l = s.getCorsiDiQuelloStudente(matricola);
+		return l;
+	}
+
+	public boolean isIscritto(String nomeCorso, int matricola) {
+		return c.isIscritto(nomeCorso, matricola);
+	}
 }
